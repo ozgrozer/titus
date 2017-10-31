@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Hidden Message</title>
+  <meta name="description" content="Hide secret messages into any text.">
+  <style>
+    * {
+      box-sizing: border-box;
+      -o-box-sizing: border-box;
+      -ms-box-sizing: border-box;
+      -moz-box-sizing: border-box;
+      -webkit-box-sizing: border-box;
+    }
+    html, body {
+      height: 100%;
+    }
+    body {
+      margin: 0;
+    }
+    textarea, pre {
+      font: 17px/24px Menlo;
+    }
+    .column {
+      width: 50%;
+      float: left;
+      height: 100%;
+    }
+    #encode, #decode {
+      height: 100%;
+    }
+    textarea {
+      width: 100%;
+      border: none;
+      outline: none;
+      padding: 20px;
+      resize: none;
+    }
+    #encode textarea {
+      height: 50%;
+    }
+    #encodeText {
+      border-bottom: 1px solid #ddd;
+    }
+    #decode textarea {
+      height: 100%;
+    }
+    pre {
+      margin: 0;
+      height: 100%;
+      padding: 20px;
+      background-color: #eee;
+      border-left: 1px solid #ddd;
+    }
+  </style>
+</head>
+<body>
+  <div class="column">
+    <div id="encode">
+      <textarea id="encodeText"></textarea>
+      <textarea id="encodeSecretMessage"></textarea>
+    </div>
+  </div>
+  <div class="column">
+    <pre id="result"></pre>
+  </div>
+  <script src="index.js"></script>
+  <script>
+    var encodeText = document.getElementById('encodeText')
+    var encodeSecretMessage = document.getElementById('encodeSecretMessage')
+    var result = document.getElementById('result')
+
+    var encode = function () {
+      setTimeout(function () {
+        var getEncodeTextValue = encodeText.value
+        var getEncodeSecretMessageValue = encodeSecretMessage.value
+        result.innerHTML = hiddenMessage({ text: getEncodeTextValue, secretMessage: getEncodeSecretMessageValue })
+      }, 0)
+    }
+
+    encodeText.addEventListener('change', encode)
+    encodeText.addEventListener('keyup', encode)
+    encodeText.addEventListener('keypress', encode)
+
+    encodeSecretMessage.addEventListener('change', encode)
+    encodeSecretMessage.addEventListener('keyup', encode)
+    encodeSecretMessage.addEventListener('keypress', encode)
+  </script>
+</body>
+</html>
