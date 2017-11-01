@@ -19,8 +19,48 @@
     body {
       margin: 0;
     }
-    textarea, pre {
-      font: 17px/24px Menlo;
+    header {
+      width: 100%;
+      height: 40px;
+      border-bottom: 1px solid #ddd;
+    }
+    #title {
+      float: left;
+      font-size: 14px;
+      line-height: 40px;
+      padding-left: 20px;
+    }
+    #buttons {
+      float: right;
+      margin-top: 4px;
+      margin-right: 4px;
+    }
+    button {
+      float: left;
+      border: none;
+      outline: none;
+      cursor: pointer;
+      font-size: 14px;
+      margin-left: 4px;
+      line-height: 16px;
+      padding: 8px 16px;
+      background-color: #e0e1e2;
+    }
+    button:hover {
+      background-color: #cacbcd;
+    }
+    button:active {
+      background-color: #babbbc;
+    }
+    button.active {
+      color: #fff;
+      background-color: #2184d1;
+    }
+    button.active:hover {
+      background-color: #1677c3;
+    }
+    button.active:active {
+      background-color: #1a69a4;
     }
     .column {
       width: 50%;
@@ -28,7 +68,11 @@
       height: 100%;
     }
     #encode, #decode {
-      height: 100%;
+      height: calc(100% - 40px);
+      -o-height: calc(100% - 40px);
+      -ms-height: calc(100% - 40px);
+      -moz-height: calc(100% - 40px);
+      -webkit-height: calc(100% - 40px);
     }
     textarea {
       width: 100%;
@@ -43,6 +87,9 @@
     #encodeText {
       border-bottom: 1px solid #ddd;
     }
+    #decode {
+      display: none;
+    }
     #decode textarea {
       height: 100%;
     }
@@ -53,13 +100,30 @@
       background-color: #eee;
       border-left: 1px solid #ddd;
     }
+    div, textarea, pre, button {
+      font-family: Menlo;
+    }
+    textarea, pre {
+      font-size: 17px;
+      line-height: 24px;
+    }
   </style>
 </head>
 <body>
+  <header>
+    <div id="title">Hidden Message</div>
+    <div id="buttons">
+      <button id="encodeButton" class="active">Encode</button>
+      <button id="decodeButton">Decode</button>
+    </div>
+  </header>
   <div class="column">
     <div id="encode">
-      <textarea id="encodeText" placeholder="Text"></textarea>
+      <textarea id="encodeText" placeholder="Text to encode"></textarea>
       <textarea id="encodeSecretMessage" placeholder="Secret message (only a, b, c, d for now)"></textarea>
+    </div>
+    <div id="decode">
+      <textarea id="decodeText" placeholder="Text to decode (not working now)"></textarea>
     </div>
   </div>
   <div class="column">
@@ -68,22 +132,50 @@
   <script src="index.js"></script>
   <script>
     var encodeText = document.getElementById('encodeText')
+    var decodeText = document.getElementById('decodeText')
     var encodeSecretMessage = document.getElementById('encodeSecretMessage')
     var result = document.getElementById('result')
-
+    var encodeArea = document.getElementById('encode')
+    var decodeArea = document.getElementById('decode')
+    var encodeButton = document.getElementById('encodeButton')
+    var decodeButton = document.getElementById('decodeButton')
     var encode = function () {
       setTimeout(function () {
         var getEncodeTextValue = encodeText.value
         var getEncodeSecretMessageValue = encodeSecretMessage.value
-        result.innerHTML = hiddenMessage({ text: getEncodeTextValue, secretMessage: getEncodeSecretMessageValue })
+        result.innerHTML = hiddenMessage({ text: getEncodeTextValue, secretMessage: getEncodeSecretMessageValue, type: 'encode' })
+      }, 0)
+    }
+    var decode = function () {
+      setTimeout(function () {
+        var getDecodeTextValue = decodeText.value
+        result.innerHTML = hiddenMessage({ text: getDecodeTextValue, type: 'decode' })
       }, 0)
     }
 
     encodeText.addEventListener('change', encode)
     encodeText.addEventListener('keydown', encode)
-
     encodeSecretMessage.addEventListener('change', encode)
     encodeSecretMessage.addEventListener('keydown', encode)
+
+    decodeText.addEventListener('change', decode)
+    decodeText.addEventListener('keydown', decode)
+
+    encodeButton.addEventListener('click', function () {
+      encodeButton.className = 'active'
+      decodeButton.className = ''
+      encodeArea.style.display = 'block'
+      decodeArea.style.display = 'none'
+      result.innerHTML = ''
+    })
+    decodeButton.addEventListener('click', function () {
+      encodeButton.className = ''
+      decodeButton.className = 'active'
+      encodeArea.style.display = 'none'
+      decodeArea.style.display = 'block'
+      result.innerHTML = ''
+    })
+    decodeButton.click()
   </script>
 </body>
 </html>
