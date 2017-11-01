@@ -1,52 +1,38 @@
 var hiddenMessage = function (opts) {
   var result
 
-  if (opts.text.length < 2) {
-    result = 'Minimum 2 characters required.\nBecause secret message will be hidden in the letters.'
-  } else {
+  if (opts.text.length > 1) {
     var characters = {
-      'a': '&#8192;',
-      'b': '&#8193;',
-      'c': '&#8194;',
-      'd': '&#8195;',
-      'e': '&#8196;',
-      'f': '&#8197;',
-      'g': '&#8198;',
-      'h': '&#8199;',
-      'i': '&#8200;',
-      'j': '&#8201;',
-      'k': '&#8203;',
-      'l': '&#8204;',
-      'm': '&#8205;',
-      'n': '&#8206;',
-      'o': '&#8207;',
-      'p': '&#8232;',
-      'q': '&#8233;',
-      'r': '&#8234;',
-      's': '&#8235;',
-      't': '&#8236;',
-      'u': '&#8237;',
-      'v': '&#8238;',
-      'w': '&#8239;',
-      'x': '&#8287;',
-      'y': '&#8288;',
-      'z': '&#9289;',
-      '0': '&#8290;',
-      '1': '&#8291;',
-      '2': '&#8292;',
-      '3': '&#8293;',
-      '4': '&#8294;',
-      '5': '&#8295;',
-      '6': '&#8296;',
-      '7': '&#8297;',
-      '8': '&#8298;',
-      '9': '&#8299;',
-      'ç': '&#8300;',
-      'ı': '&#8301;',
-      'ğ': '&#8302;',
-      'ş': '&#8303;'
+      'a': '&#8288;',
+      'b': '&#8289;',
+      'c': '&#8290;',
+      'd': '&#8291;',
+      'e': '?',
+      'f': '?',
+      'g': '?',
+      'h': '?',
+      'i': '?',
+      'j': '?',
+      'k': '?',
+      'l': '?',
+      'm': '?',
+      'n': '?',
+      'o': '?',
+      'p': '?',
+      'q': '?',
+      'r': '?',
+      's': '?',
+      't': '?',
+      'u': '?',
+      'v': '?',
+      'w': '?',
+      'x': '?',
+      'y': '?',
+      'z': '?'
     }
 
+    var firstLetterOfText = opts.text.substr(0, 1)
+    var restOfText = opts.text.substr(1)
     var allReplace = function (text, obj) {
       for (var key in obj) {
         text = text.replace(new RegExp(key, 'g'), obj[key])
@@ -54,7 +40,9 @@ var hiddenMessage = function (opts) {
       return text
     }
 
-    result = opts.text + '\n-' + allReplace(opts.secretMessage, characters) + '-'
+    result = firstLetterOfText + allReplace(opts.secretMessage, characters) + restOfText
+  } else {
+    result = 'Minimum 2 characters required.\nBecause secret message will be hidden in the visible letters.'
   }
 
   return result
