@@ -1,55 +1,46 @@
 var hiddenMessage = function (opts) {
-  var result
-  var characters = {
+  var result = ''
+  var characters1 = {
     'a': '&#8288;',
     'b': '&#8289;',
     'c': '&#8290;',
-    'd': '&#8291;',
-    'e': 'e',
-    'f': 'f',
-    'g': 'g',
-    'h': 'h',
-    'i': 'i',
-    'j': 'j',
-    'k': 'k',
-    'l': 'l',
-    'm': 'm',
-    'n': 'n',
-    'o': 'o',
-    'p': 'p',
-    'q': 'q',
-    'r': 'r',
-    's': 's',
-    't': 't',
-    'u': 'u',
-    'v': 'v',
-    'w': 'w',
-    'x': 'x',
-    'y': 'y',
-    'z': 'z'
+    'd': '&#8291;'
   }
-
-  var firstLetterOfText = opts.text.substr(0, 1)
-  var restOfText = opts.text.substr(1)
-  var allReplace = function (text, obj) {
-    for (var key in obj) {
-      text = text.replace(new RegExp(key, 'g'), obj[key])
-    }
-    return text
-  }
-  var hasUnicode = function (str) {
-    return /[^\u0000-\u00ff]/.test(str)
+  var characters2 = {
+    '2060': 'a',
+    '2061': 'b',
+    '2062': 'c',
+    '2063': 'd'
   }
 
   if (opts.type === 'encode') {
     if (opts.text.length > 1) {
-      result = firstLetterOfText + allReplace(opts.secretMessage, characters) + restOfText
+      var firstLetterOfText = opts.text.substr(0, 1)
+      var restOfText = opts.text.substr(1)
+      var replaceAll = function (text, obj) {
+        for (var key in obj) {
+          text = text.replace(new RegExp(key, 'g'), obj[key])
+        }
+        return text
+      }
+      result = firstLetterOfText + replaceAll(opts.secretMessage, characters1, 'encode') + restOfText
     } else {
       result = 'Minimum 2 characters required.\nBecause secret message will be hidden in the visible letters.'
     }
   } else if (opts.type === 'decode') {
     if (opts.text.length > 1) {
-      result = hasUnicode(opts.text)
+      var decodeUnicode = function (text) {
+        var collect = ''
+        for (var i = 0, len = text.length; i < len; i++) {
+          var letter = text[i]
+          var letterToUnicode = letter.codePointAt(0).toString(16)
+          if (characters2.hasOwnProperty(letterToUnicode)) {
+            collect += characters2[letterToUnicode]
+          }
+        }
+        return collect
+      }
+      result = decodeUnicode(opts.text) || 'There is no secret message in text.'
     } else {
       result = 'Minimum 2 characters required.\nBecause secret message is hidden in the visible letters.'
     }
