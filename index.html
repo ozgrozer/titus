@@ -20,78 +20,96 @@
       margin: 0;
       overflow: hidden;
     }
+
     header {
       width: 100%;
-      height: 40px;
+      height: 50px;
+      background-color: #fbfbfb;
       border-bottom: 1px solid #ddd;
     }
     #title {
       float: left;
-      font-size: 14px;
-      line-height: 40px;
+      line-height: 50px;
       padding-left: 20px;
     }
     #buttons {
       float: right;
-      margin-top: 4px;
-      margin-right: 4px;
+      margin: 8px 8px 0 0;
     }
-    button {
+    #buttons button {
       float: left;
       border: none;
       outline: none;
       cursor: pointer;
       font-size: 14px;
-      margin-left: 4px;
+      margin-left: 8px;
       line-height: 16px;
       padding: 8px 16px;
       background-color: #e0e1e2;
     }
-    button:hover {
+    #buttons button:hover {
       background-color: #cacbcd;
     }
-    button:active {
+    #buttons button:active {
       background-color: #babbbc;
     }
-    button.active {
+    #buttons button.active {
       color: #fff;
       background-color: #2184d1;
     }
-    button.active:hover {
+    #buttons button.active:hover {
       background-color: #1677c3;
     }
-    button.active:active {
+    #buttons button.active:active {
       background-color: #1a69a4;
+    }
+
+    main {
+      height: calc(100% - 50px);
+      -o-height: calc(100% - 50px);
+      -ms-height: calc(100% - 50px);
+      -moz-height: calc(100% - 50px);
+      -webkit-height: calc(100% - 50px);
     }
     .column {
       width: 50%;
       float: left;
-      height: calc(100% - 40px);
-      -o-height: calc(100% - 40px);
-      -ms-height: calc(100% - 40px);
-      -moz-height: calc(100% - 40px);
-      -webkit-height: calc(100% - 40px);
-    }
-    #encode, #decode {
       height: 100%;
     }
-    textarea {
+    .column:first-child {
+      border-right: 1px solid #ddd;
+    }
+    .columnTitle {
+      height: 50px;
+      padding: 0 20px;
+      line-height: 50px;
+      background-color: #eee;
+      border-bottom: 1px solid #ddd;
+    }
+    .columnContent {
+      height: calc(100% - 50px);
+      -o-height: calc(100% - 50px);
+      -ms-height: calc(100% - 50px);
+      -moz-height: calc(100% - 50px);
+      -webkit-height: calc(100% - 50px);
+    }
+    #encodeArea textarea, #decodeArea textarea {
       width: 100%;
       border: none;
+      resize: none;
       outline: none;
       padding: 20px;
-      resize: none;
     }
-    #encode textarea {
+    #encodeArea textarea {
       height: 50%;
     }
     #encodeText {
-      border-bottom: 1px solid #ddd;
+      border-bottom: 1px solid #ddd !important;
     }
-    #decode {
+    #decodeArea {
       display: none;
     }
-    #decode textarea {
+    #decodeArea textarea {
       height: 100%;
     }
     pre {
@@ -99,7 +117,6 @@
       height: 100%;
       padding: 20px;
       background-color: #eee;
-      border-left: 1px solid #ddd;
     }
     div, textarea, pre, button {
       font-family: Menlo;
@@ -118,59 +135,81 @@
       <button id="decodeButton">Decode</button>
     </div>
   </header>
-  <div class="column">
-    <div id="encode">
-      <textarea id="encodeText" placeholder="Text to encode"></textarea>
-      <textarea id="encodeSecretMessage" placeholder="Secret message (only a, b, c, d letters for now)"></textarea>
+
+  <main id="encodeArea">
+    <div class="column">
+      <div class="columnTitle">Encode</div>
+      <div class="columnContent">
+        <textarea id="encodeText" placeholder="Text"></textarea>
+        <textarea id="encodeSecretMessage" placeholder="Secret Message"></textarea>
+      </div>
     </div>
-    <div id="decode">
-      <textarea id="decodeText" placeholder="Text to decode"></textarea>
+    <div class="column">
+      <div class="columnTitle">Encoded Result</div>
+      <div class="columnContent">
+        <pre id="encodeResult"></pre>
+      </div>
     </div>
-  </div>
-  <div class="column">
-    <pre id="result">Result</pre>
-  </div>
+  </main>
+
+  <main id="decodeArea">
+    <div class="column">
+      <div class="columnTitle">Decode</div>
+      <div class="columnContent">
+        <textarea id="decodeText" placeholder="Text"></textarea>
+      </div>
+    </div>
+    <div class="column">
+      <div class="columnTitle">Decoded Result</div>
+      <div class="columnContent">
+        <pre id="decodeResult"></pre>
+      </div>
+    </div>
+  </main>
   <script src="index.js"></script>
   <script>
     var encodeText = document.getElementById('encodeText')
-    var decodeText = document.getElementById('decodeText')
     var encodeSecretMessage = document.getElementById('encodeSecretMessage')
-    var result = document.getElementById('result')
-    var encodeArea = document.getElementById('encode')
-    var decodeArea = document.getElementById('decode')
+    var encodeResult = document.getElementById('encodeResult')
+    var encodeFunction = function () {
+      setTimeout(function () {
+        encodeResult.innerHTML = hiddenMessage({
+          type: 'encode',
+          text: encodeText.value,
+          secretMessage: encodeSecretMessage.value
+        })
+      }, 0)
+    }
+    encodeText.addEventListener('keyup', encodeFunction)
+    encodeSecretMessage.addEventListener('keyup', encodeFunction)
+
+    var decodeText = document.getElementById('decodeText')
+    var decodeResult = document.getElementById('decodeResult')
+    var decodeFunction = function () {
+      setTimeout(function () {
+        decodeResult.innerHTML = hiddenMessage({
+          type: 'decode',
+          text: decodeText.value
+        })
+      }, 0)
+    }
+    decodeText.addEventListener('keyup', decodeFunction)
+
     var encodeButton = document.getElementById('encodeButton')
     var decodeButton = document.getElementById('decodeButton')
-    var encode = function () {
-      setTimeout(function () {
-        var getEncodeTextValue = encodeText.value
-        var getEncodeSecretMessageValue = encodeSecretMessage.value
-        result.innerHTML = hiddenMessage({ text: getEncodeTextValue, secretMessage: getEncodeSecretMessageValue, type: 'encode' })
-      }, 0)
-    }
-    var decode = function () {
-      setTimeout(function () {
-        var getDecodeTextValue = decodeText.value
-        result.innerHTML = hiddenMessage({ text: getDecodeTextValue, type: 'decode' })
-      }, 0)
-    }
-
-    encodeText.addEventListener('keyup', encode)
-    encodeSecretMessage.addEventListener('keyup', encode)
-    decodeText.addEventListener('keyup', decode)
-
+    var encodeArea = document.getElementById('encodeArea')
+    var decodeArea = document.getElementById('decodeArea')
     encodeButton.addEventListener('click', function () {
       encodeButton.className = 'active'
       decodeButton.className = ''
       encodeArea.style.display = 'block'
       decodeArea.style.display = 'none'
-      encode()
     })
     decodeButton.addEventListener('click', function () {
       encodeButton.className = ''
       decodeButton.className = 'active'
       encodeArea.style.display = 'none'
       decodeArea.style.display = 'block'
-      decode()
     })
   </script>
 </body>

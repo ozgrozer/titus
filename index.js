@@ -13,22 +13,18 @@ var hiddenMessage = function (opts) {
     '2063': 'd'
   }
 
-  if (opts.type === 'encode') {
-    if (opts.text.length > 1) {
-      var firstLetterOfText = opts.text.substr(0, 1)
-      var restOfText = opts.text.substr(1)
+  if (opts.text.length > 1) {
+    if (opts.type === 'encode') {
+      var firstLetterOfInput = opts.text.substr(0, 1)
+      var restOfInput = opts.text.substr(1)
       var replaceAll = function (text, obj) {
         for (var key in obj) {
           text = text.replace(new RegExp(key, 'g'), obj[key])
         }
         return text
       }
-      result = firstLetterOfText + replaceAll(opts.secretMessage, characters1, 'encode') + restOfText
-    } else {
-      result = 'Minimum 2 characters required.\nBecause secret message will be hidden in the visible letters.'
-    }
-  } else if (opts.type === 'decode') {
-    if (opts.text.length > 1) {
+      result = firstLetterOfInput + replaceAll(opts.secretMessage, characters1) + restOfInput
+    } else if (opts.type === 'decode') {
       var decodeUnicode = function (text) {
         var collect = ''
         for (var i = 0, len = text.length; i < len; i++) {
@@ -41,9 +37,9 @@ var hiddenMessage = function (opts) {
         return collect
       }
       result = decodeUnicode(opts.text) || 'There is no secret message in text.'
-    } else {
-      result = 'Minimum 2 characters required.\nBecause secret message is hidden in the visible letters.'
     }
+  } else {
+    result = 'Minimum 2 characters required.'
   }
 
   return result
