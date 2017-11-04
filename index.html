@@ -36,7 +36,7 @@
       float: right;
       margin: 8px 8px 0 0;
     }
-    #buttons button {
+    #buttons .button {
       float: left;
       border: none;
       outline: none;
@@ -45,26 +45,32 @@
       margin-left: 8px;
       line-height: 16px;
       padding: 8px 16px;
+      text-decoration: none;
       background-color: #e0e1e2;
+      border-radius: 3px;
+      -o-border-radius: 3px;
+      -ms-border-radius: 3px;
+      -moz-border-radius: 3px;
+      -webkit-border-radius: 3px;
     }
-    #buttons a {
+    #buttons .github {
       float: left;
       margin: 4px 0 0 8px;
     }
-    #buttons button:hover {
+    #buttons .button:hover {
       background-color: #cacbcd;
     }
-    #buttons button:active {
+    #buttons .button:active {
       background-color: #babbbc;
     }
-    #buttons button.active {
+    #buttons .button.active {
       color: #fff;
       background-color: #2184d1;
     }
-    #buttons button.active:hover {
+    #buttons .button.active:hover {
       background-color: #1677c3;
     }
-    #buttons button.active:active {
+    #buttons .button.active:active {
       background-color: #1a69a4;
     }
 
@@ -123,7 +129,7 @@
       white-space: normal;
       background-color: #eee;
     }
-    div, textarea, pre, button {
+    div, textarea, pre, a {
       font-family: Menlo;
     }
     textarea, pre {
@@ -136,9 +142,9 @@
   <header>
     <div id="title">Titus</div>
     <div id="buttons">
-      <button id="encodeButton" class="active">Encode</button>
-      <button id="decodeButton">Decode</button>
-      <a href="https://github.com/ozgrozer/titus">
+      <a href="#encode" class="button" id="encodeButton">Encode</a>
+      <a href="#decode" class="button" id="decodeButton">Decode</a>
+      <a href="https://github.com/ozgrozer/titus" class="github">
         <svg aria-hidden="true" class="octicon octicon-mark-github" height="24" version="1.1" viewBox="0 0 16 16" width="24"><path fill-rule="evenodd" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z"></path></svg>
       </a>
     </div>
@@ -206,17 +212,24 @@
     var encodeArea = document.getElementById('encodeArea')
     var decodeArea = document.getElementById('decodeArea')
     encodeButton.addEventListener('click', function () {
-      encodeButton.className = 'active'
-      decodeButton.className = ''
+      encodeButton.className = 'button active'
+      decodeButton.className = 'button'
       encodeArea.style.display = 'block'
       decodeArea.style.display = 'none'
     })
     decodeButton.addEventListener('click', function () {
-      encodeButton.className = ''
-      decodeButton.className = 'active'
+      encodeButton.className = 'button'
+      decodeButton.className = 'button active'
       encodeArea.style.display = 'none'
       decodeArea.style.display = 'block'
     })
+
+    var getUrlAnchor = window.location.href.substring(window.location.href.indexOf('#') + 1)
+    if (getUrlAnchor === 'decode') {
+      decodeButton.click()
+    } else {
+      encodeButton.click()
+    }
   </script>
 </body>
 </html>
