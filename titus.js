@@ -1,20 +1,14 @@
-var titus = function (opts) {
-  var result = ''
-  var characters1 = {
-    'a': '&#8288;',
-    'b': '&#8289;',
-    'c': '&#8290;',
-    'd': '&#8291;'
-  }
-  var characters2 = {
-    '2060': 'a',
-    '2061': 'b',
-    '2062': 'c',
-    '2063': 'd'
-  }
+(function (exports) {
+  exports.encode = function (opts) {
+    var result = ''
+    var characters1 = {
+      'a': '&#8288;',
+      'b': '&#8289;',
+      'c': '&#8290;',
+      'd': '&#8291;'
+    }
 
-  if (opts.text.length > 1) {
-    if (opts.type === 'encode') {
+    if (opts.text.length > 1) {
       var firstLetterOfInput = opts.text.substr(0, 1)
       var restOfInput = opts.text.substr(1)
       var replaceAll = function (text, obj) {
@@ -24,7 +18,22 @@ var titus = function (opts) {
         return text
       }
       result = firstLetterOfInput + replaceAll(opts.secretMessage, characters1) + restOfInput
-    } else if (opts.type === 'decode') {
+    } else {
+      result = 'Minimum 2 characters required.'
+    }
+
+    return result
+  }
+
+  exports.decode = function (opts) {
+    var result = ''
+    if (opts.text.length > 1) {
+      var characters2 = {
+        '2060': 'a',
+        '2061': 'b',
+        '2062': 'c',
+        '2063': 'd'
+      }
       var decodeUnicode = function (text) {
         var collect = ''
         for (var i = 0, len = text.length; i < len; i++) {
@@ -37,10 +46,10 @@ var titus = function (opts) {
         return collect
       }
       result = decodeUnicode(opts.text) || 'There is no secret message in text.'
+    } else {
+      result = 'Minimum 2 characters required.'
     }
-  } else {
-    result = 'Minimum 2 characters required.'
-  }
 
-  return result
-}
+    return result
+  }
+}(typeof exports === 'undefined' ? this.titus = {} : exports))
