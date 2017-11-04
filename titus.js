@@ -64,20 +64,21 @@
     var result = ''
 
     if (opts.text.length > 1) {
-      var firstLetterOfInput = opts.text.substr(0, 1)
-      var restOfInput = opts.text.substr(1)
-
-      var replaceAll = function (text, obj) {
+      var replaceAll = function (text) {
         text.replace(/ /g, characters.encode[' '])
 
-        for (var key in obj) {
-          text = text.replace(new RegExp(key, 'g'), obj[key])
+        for (var key in characters.encode) {
+          text = text.replace(new RegExp(key, 'g'), characters.encode[key])
         }
 
         return text
       }
 
-      result = firstLetterOfInput + replaceAll(opts.secretMessage, characters.encode) + restOfInput
+      var forCondition = opts.text.length > opts.secretMessage.length ? opts.text.length : opts.secretMessage.length
+      for (var i = 0; i < forCondition; i++) {
+        if (opts.text[i]) result += opts.text[i]
+        if (opts.secretMessage[i]) result += replaceAll(opts.secretMessage[i])
+      }
     } else {
       result = 'Minimum 2 characters required.'
     }
