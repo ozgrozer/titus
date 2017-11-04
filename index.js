@@ -1,4 +1,4 @@
-var hiddenMessage = function (opts) {
+var titus = function (opts) {
   var result = ''
   var characters1 = {
     'a': '&#8288;',

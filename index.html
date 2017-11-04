@@ -173,7 +173,7 @@
     var encodeResult = document.getElementById('encodeResult')
     var encodeFunction = function () {
       setTimeout(function () {
-        encodeResult.innerHTML = hiddenMessage({
+        encodeResult.innerHTML = titus({
           type: 'encode',
           text: encodeText.value,
           secretMessage: encodeSecretMessage.value
@@ -187,7 +187,7 @@
     var decodeResult = document.getElementById('decodeResult')
     var decodeFunction = function () {
       setTimeout(function () {
-        decodeResult.innerHTML = hiddenMessage({
+        decodeResult.innerHTML = titus({
           type: 'decode',
           text: decodeText.value
         })
