@@ -31,7 +31,8 @@ var characters = {
   'w': '223',
   'x': '224',
   'y': '231',
-  'z': '232'
+  'z': '232',
+  ' ': '233'
 }
 
 var charactersEncode = function () {
