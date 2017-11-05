@@ -229,8 +229,13 @@
       var getUrlAnchor = window.location.href.substring(window.location.href.indexOf('#') + 1)
       if (getUrlAnchor === 'decode') {
         decodeButton.click()
-      } else {
+      } else if (getUrlAnchor === 'encode') {
         encodeButton.click()
+      } else {
+        encodeButton.className = 'button active'
+        decodeButton.className = 'button'
+        encodeArea.style.display = 'block'
+        decodeArea.style.display = 'none'
       }
     }
     window.addEventListener('hashchange', function () {
